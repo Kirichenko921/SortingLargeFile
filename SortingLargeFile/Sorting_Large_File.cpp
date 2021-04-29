@@ -5,8 +5,8 @@
 #include <chrono> 
 #include"TimSort.h"
 
-//using namespace std;
-void writeArr(const std::string& filename, const int* arr, const int n)  // функция записи в файл
+
+void writeArr(const std::string& filename, const int* arr, const  int &n)  // функция записи в файл
 {
 	std::fstream fs;
 	fs.open(filename, std::fstream::out);
@@ -21,26 +21,31 @@ void writeArr(const std::string& filename, const int* arr, const int n)  // фу
 	}
 }
 
-void readArr(const std::string& filename, int*& arr, int& n)//функция чтения из файла
+void readArr(const std::string& filename,  int*& arr,  int& n)//функция чтения из файла
 {
-	std::fstream fs;
+	std::fstream fs; // переменнная для записи данных в массив
 
-	fs.open(filename, std::fstream::in);
+	fs.open(filename, std::fstream::in );  // открываем файл
 	if (fs.is_open())// проверяем что файл успешно открыт
 	{
 		fs >> n; // читаем размер массива
-		arr = new int[n];
+		arr = new  int[n];
 
 		for (int i = 0; i < n; ++i)
-			fs >> arr[i];// читаем из файла разделительные символы - пробел и перенос строки
-
+			fs >> arr[i];// читаем из файла 
+		
+	
 		fs.close();//закрываем файл
 	}
+	std::ofstream ofs;// переменная для очистки данных из массива
+	ofs.open(filename, std::ofstream::trunc);
+	ofs.trunc;    // очищаем и 
+	ofs.close();//закрываем файл
+
 }
 
-void fillingArray(int* rand_arr, const int size, const int  range_len) // функция заполнения массива случайными числами
+void fillingArray(int* rand_arr, const unsigned int &size, const unsigned int  &range_len) // функция заполнения массива случайными числами
 {
-
 	
 	std::srand(static_cast<unsigned int>(std::time(NULL)));//Устанавливаем  начальное значение для rand, и преобразовываем еог в unsigned int
 	 
@@ -52,7 +57,7 @@ void fillingArray(int* rand_arr, const int size, const int  range_len) // фун
 	}
 
 }
-void writeSortedNumbersToFile(std::string filename,const int size, const int range_len)//заполнение массива значениями, сортировка и запись в файл
+void writeSortedNumbersToFile(std::string filename,const unsigned int size, const unsigned int range_len)//заполнение массива значениями, сортировка и запись в файл
 {
 	int* arr = new int[size];
 	fillingArray(arr, size, range_len);
@@ -98,8 +103,8 @@ void mergeFiles(std::string filenameFirst, std::string filenameSecond, std::stri
 int main()
 
 {
-	const int size = 50;
-	const int range_len = 1000;
+	const unsigned  int size = 100000;
+	const unsigned int range_len = 1000000;
 	writeSortedNumbersToFile("first_file.txt", size, range_len);
 	writeSortedNumbersToFile( "second_file.txt", size, range_len+1);
 	writeSortedNumbersToFile("third_file.txt", size, range_len+2);
@@ -107,5 +112,12 @@ int main()
 	mergeFiles("first_file.txt", "second_file.txt", "first_merged_file.txt");
 	mergeFiles("third_file.txt", "fourth_file.txt", "second_merged_file.txt");
 	mergeFiles("first_merged_file.txt", "second_merged_file.txt", "large_merged_file.txt");
+
+	// Чтобы не хранить 2Gb отсортированных чисел - раскомментируй этот код
+	/*std::ofstream ofs;// переменная для очистки данных из массива
+	ofs.open("large_merged_file.txt", std::ofstream::trunc);
+	ofs.trunc;    // очищаем и 
+	ofs.close();//закрываем файл*/
+	
 	return 0;
 }
