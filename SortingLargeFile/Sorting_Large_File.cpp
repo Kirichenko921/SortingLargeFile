@@ -111,16 +111,19 @@ int main()
 
 {
 	setlocale(LC_ALL, "ru");
-	const unsigned  int size = 100000;
-	const unsigned int range_len = 10000;
+	const unsigned  int size = 100000; // размер массива для самых маленьких файлов
+	const unsigned int range_len = 10000; // максимальное число массива
+	// запоняем и сортируем  массив. Вносим его значения в  файл
 	writeSortedNumbersToFile("first_file.txt", size, range_len);
-	writeSortedNumbersToFile("second_file.txt", size, range_len + 1);
-	writeSortedNumbersToFile("third_file.txt", size, range_len + 2);
-	writeSortedNumbersToFile("fourth_file.txt", size, range_len + 3);
+	writeSortedNumbersToFile("second_file.txt", size, range_len + 1);// добавляем к каждому макимальному числу по единице,
+	writeSortedNumbersToFile("third_file.txt", size, range_len + 2); // чтобы массивы получились разные
+	writeSortedNumbersToFile("fourth_file.txt", size, range_len + 3); //  т.к srand не успевает обновляться
+	// объединяем полученные массивы в два
 	mergeFiles("first_file.txt", "second_file.txt", "first_merged_file.txt");
 	mergeFiles("third_file.txt", "fourth_file.txt", "second_merged_file.txt");
+	// и оставшиеся два массива объдиняем в один
 	mergeFiles("first_merged_file.txt", "second_merged_file.txt", "large_merged_file.txt");
-
+	// выводим файл на консоль
 	std::ifstream filename("large_merged_file.txt");// переменная для чтения массива
 
 	if (!filename)// Если мы не можем открыть файл для чтения его содержимого,
